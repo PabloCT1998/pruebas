@@ -15,9 +15,6 @@
     $parametros = seleccionarParametrosCRM($_SESSION['usuario']['UsuarioID']);
     foreach($parametros as $parametro){
         foreach($parametro as $p){
-            if($p == 'Pipedrive Activo'){
-                $crm = $parametro['ValorParametroCRM'];
-            }
             if($p == 'Token Pipedrive'){
                 $token = $parametro['ValorParametroCRM'];
             }
@@ -44,7 +41,6 @@
                 }else{
                     $nota = '';
                 }
-
                 if ($_FILES['archivos']['error'][0] != UPLOAD_ERR_NO_FILE) {
                     $archivos = $_FILES['archivos'];
                     foreach($archivos['tmp_name'] as $key => $tmp_name){
@@ -84,13 +80,11 @@
                         $_SESSION['erroCRM'] = 'Error al enviarse información (archivos)';
                         header('location: formCRM.php');              
                     }
-
                 } 
             } else{
                 $_SESSION['erroCRM'] = 'Error al enviarse información';
                 header('location: formCRM.php');        
             }
-            
         }else{    
             $_SESSION['erroCRM'] = 'Error al enviarse información';
             header('location: formCRM.php');
