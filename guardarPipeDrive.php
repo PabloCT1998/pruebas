@@ -80,25 +80,25 @@ use MicrosoftAzure\Storage\Common\Exceptions\ServiceException;
                                 'error' => $_FILES["archivos"]["error"][$key],
                                 'size' =>  $size
                             ];                
-                            try {
-                                $blobService->addBlobContainer($containerName);
-                                $blobService->setBlobContainerAcl($containerName, AzureBlobService::ACL_BLOB);
-                            } catch (ServiceException $serviceException) {
+                            // try {
+                            //     $blobService->addBlobContainer($containerName);
+                            //     $blobService->setBlobContainerAcl($containerName, AzureBlobService::ACL_BLOB);
+                            // } catch (ServiceException $serviceException) {
                                      
-                            }
-                            try {
-                                $fileName = $blobService->uploadBlob($containerName,  $archivo['archivos']);
-                            } catch (ServiceException $serviceException) {
+                            // }
+                            // try {
+                            //     $fileName = $blobService->uploadBlob($containerName,  $archivo['archivos']);
+                            // } catch (ServiceException $serviceException) {
                                      
-                            }
+                            // }
                         }
                     }
 
-                    $notaArchivoValidar = addNote($notaArchivo, $idLead, $token, $dominio);
-                    if(!$notaArchivoValidar){
-                        $_SESSION['erroCRM'] = 'Error al enviarse información (archivos)';
-                        header('location: formCRM.php');              
-                    }
+                    // $notaArchivoValidar = addNote($notaArchivo, $idLead, $token, $dominio);
+                    // if(!$notaArchivoValidar){
+                    //     $_SESSION['erroCRM'] = 'Error al enviarse información (archivos)';
+                    //     header('location: formCRM.php');              
+                    // }
 
                 } 
             } else{
