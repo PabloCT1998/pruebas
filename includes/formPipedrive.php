@@ -50,12 +50,12 @@
                     </div>
                 </div>
                 <br>
-                <div class="row">
+                /*<div class="row">
                     <div class="col-5">
                         <label for="archivos[]" class="form-label">Archivos</label>
                         <input type="file" class="form-control" name="archivos[]" id="archivos[]" multiple="">
                     </div>
-                </div>
+                </div>*/
                 <br>
                 <div class="row">
                     <div class="col-5">
