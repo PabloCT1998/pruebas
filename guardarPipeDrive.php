@@ -49,7 +49,7 @@ include ('includes/AzureBlobService.php');
                     $nota = '';
                 }
 
-                if ($_FILES['archivos']['error'][0] != UPLOAD_ERR_NO_FILE) {
+                // if ($_FILES['archivos']['error'][0] != UPLOAD_ERR_NO_FILE) {
                     // foreach($_FILES["archivos"]['tmp_name'] as $key => $tmp_name){
                     //     if($_FILES["archivos"]["name"][$key]) {
                     //         $path = $_FILES['archivos']['name'][$key]; 
