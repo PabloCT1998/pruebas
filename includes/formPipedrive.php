@@ -1,4 +1,4 @@
-<form action="guardarPipeDrive.php" method="POST" enctype="multipart/form-data">
+<form action="guardarCRM.php" method="POST" enctype="multipart/form-data">
                 
 			<?php if(isset($_SESSION['exitoCRM'])){?>
 				<div class="row">
