@@ -100,7 +100,7 @@ include ('includes/AzureBlobService.php');
                     //     header('location: formCRM.php');              
                     // }
 
-                } 
+            //    } 
             } else{
                 $_SESSION['erroCRM'] = 'Error al enviarse información 2';
                 header('location: formCRM.php');        
