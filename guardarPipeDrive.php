@@ -6,16 +6,16 @@ include('includes/funciones.php');
 require('vendor/autoload.php');
 require('vendor\microsoft\azure-storage-blob\src\Blob\BlobRestProxy.php'); 
 include ('includes/AzureBlobService.php');
-require_once __DIR__ . '/vendor/autoload.php';
-use MicrosoftAzure\Storage\Blob\BlobRestProxy;
-use MicrosoftAzure\Storage\Common\Exceptions\ServiceException;
+// require_once __DIR__ . '/vendor/autoload.php';
+// use MicrosoftAzure\Storage\Blob\BlobRestProxy;
+// use MicrosoftAzure\Storage\Common\Exceptions\ServiceException;
 
     session_start();
     $fechaCreacion =date("d-m-Y-h-i-s");
-    $connectionString ='DefaultEndpointsProtocol=https;AccountName=azsolar;AccountKey=s1x0MhH7ErO+KCUzv1xImFcGbzfwO+ewifWmzaN43d6C/zqfO8LSOOCFNrTE10J31/pD5CQuIfuD+ASt68bhyA==;EndpointSuffix=core.windows.net';
-    $blobClient = BlobRestProxy::createBlobService($connectionString);
-    $blobService = new AzureBlobService($blobClient);
-    $containerName = 'azsolar';
+    // $connectionString ='DefaultEndpointsProtocol=https;AccountName=azsolar;AccountKey=s1x0MhH7ErO+KCUzv1xImFcGbzfwO+ewifWmzaN43d6C/zqfO8LSOOCFNrTE10J31/pD5CQuIfuD+ASt68bhyA==;EndpointSuffix=core.windows.net';
+    // $blobClient = BlobRestProxy::createBlobService($connectionString);
+    // $blobService = new AzureBlobService($blobClient);
+    // $containerName = 'azsolar';
     $parametros = seleccionarParametrosCRM($_SESSION['usuario']['UsuarioID']);
     foreach($parametros as $parametro){
         foreach($parametro as $p){
