@@ -1,0 +1,6 @@
+{
+    "require": {
+        "microsoft/azure-storage-blob": "^1.5",
+        "hubspot/api-client": "^10.1"
+    }
+}
