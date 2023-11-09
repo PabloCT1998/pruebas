@@ -51,15 +51,10 @@
                         if ($archivos['error'][$key] === UPLOAD_ERR_OK) {
                             $archivoTmp = $archivos['tmp_name'][$key];
                             $nombreOrigianlConExrension = $archivos['name'][$key];
-                            $nombreOriginalSinExtension = pathinfo($nombreOrigianlConExrension, PATHINFO_FILENAME);
                             $extension = pathinfo($nombreOrigianlConExrension, PATHINFO_EXTENSION);
-                            $tipoArchivo = $archivos['type'][$key];
-                            $size = $archivos['size'][$key];
                             $guid = getGUID();
                             $nombreUnicoExtension = $fechaCreacion .'-'. $guid .'.'.$extension;
-                            
                             $archivos["name"][$key] =  $nombreUnicoExtension ; 
-            
                             // Nombres de archivos de temporales
                             $fuente = $archivos["tmp_name"][$key];  
                             
