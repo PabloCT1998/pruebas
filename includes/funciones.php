@@ -295,13 +295,13 @@
 	  return $datos;
   }
 
-  function seleccionarParametroCRMActivo($UsuarioID){
+  function seleccionarParametroPipedrive($UsuarioID){
     $soporte = new SolarDB ();
 	  $conexion = $soporte->connect();
     $result = $conexion->prepare('SELECT DescParametroCRM, ValorParametroCRM 
                                   FROM ParametroCRM
                                   WHERE UsuarioID = ? 
-                                  AND DescParametroCRM = ?;');
+                                  AND DescParametroCRM = IN (Token Pipedrive, Dominio Pipedrive)');
     $result->execute([$UsuarioID, 'CRM Activo']);
     $datos = $result->fetchAll(PDO::FETCH_ASSOC);
 	  return $datos;
