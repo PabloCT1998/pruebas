@@ -1,21 +1,17 @@
 <?php
+    include('includes/conexion.php');
+    include('includes/funciones.php');
+    require('vendor/autoload.php');
+    use MicrosoftAzure\Storage\Blob\BlobRestProxy;
+    use MicrosoftAzure\Storage\Common\Exceptions\ServiceException;
     
-include('includes/conexion.php');
-include('includes/funciones.php');
-
-require('vendor/autoload.php');
-require('vendor\microsoft\azure-storage-blob\src\Blob\BlobRestProxy.php'); 
-include ('includes/AzureBlobService.php');
-// require_once __DIR__ . '/vendor/autoload.php';
-// use MicrosoftAzure\Storage\Blob\BlobRestProxy;
-// use MicrosoftAzure\Storage\Common\Exceptions\ServiceException;
-
     session_start();
     $fechaCreacion =date("d-m-Y-h-i-s");
-    // $connectionString ='DefaultEndpointsProtocol=https;AccountName=azsolar;AccountKey=s1x0MhH7ErO+KCUzv1xImFcGbzfwO+ewifWmzaN43d6C/zqfO8LSOOCFNrTE10J31/pD5CQuIfuD+ASt68bhyA==;EndpointSuffix=core.windows.net';
-    // $blobClient = BlobRestProxy::createBlobService($connectionString);
-    // $blobService = new AzureBlobService($blobClient);
-    // $containerName = 'azsolar';
+    $connectionString ='DefaultEndpointsProtocol=https;AccountName=azsolar;AccountKey=s1x0MhH7ErO+KCUzv1xImFcGbzfwO+ewifWmzaN43d6C/zqfO8LSOOCFNrTE10J31/pD5CQuIfuD+ASt68bhyA==;EndpointSuffix=core.windows.net';
+
+    $blobClient = BlobRestProxy::createBlobService($connectionString);
+    $containerName = 'azsolar';
+
     $parametros = seleccionarParametrosCRM($_SESSION['usuario']['UsuarioID']);
     foreach($parametros as $parametro){
         foreach($parametro as $p){
@@ -49,65 +45,59 @@ include ('includes/AzureBlobService.php');
                     $nota = '';
                 }
 
-                // if ($_FILES['archivos']['error'][0] != UPLOAD_ERR_NO_FILE) {
-                    // foreach($_FILES["archivos"]['tmp_name'] as $key => $tmp_name){
-                    //     if($_FILES["archivos"]["name"][$key]) {
-                    //         $path = $_FILES['archivos']['name'][$key]; 
-                    //         echo '<br>path: '. $path;
-                    //         $nombreOriginalSinExtension = pathinfo($path, PATHINFO_FILENAME);
-                    //         echo ' <br>Nombre: '. $nombreOriginalSinExtension;
-                    //         $nombreOrigianlConExrension = $_FILES["archivos"]["name"][$key]; 
-                    //         $extension = pathinfo($path, PATHINFO_EXTENSION);
-                    //         echo '<br>Extensión: '. $extension;
-                    //         $tipoArchivo = $_FILES['archivos']['type'][$key];
-                    //         $size = $_FILES['archivos']['size'][$key];
-                    //         $guid = getGUID();
-                    //         '<br>unica: '. $nombreUnicoExtension = $fechaCreacion .'-'. $guid .'.'.$extension;
+                if ($_FILES['archivos']['error'][0] != UPLOAD_ERR_NO_FILE) {
+                    $archivos = $_FILES['archivos'];
+                    foreach($archivos['tmp_name'] as $key => $tmp_name){
+                        if ($archivos['error'][$key] === UPLOAD_ERR_OK) {
+                            $archivoTmp = $archivos['tmp_name'][$key];
+                            $nombreOrigianlConExrension = $archivos['name'][$key];
+                            $nombreOriginalSinExtension = pathinfo($nombreOrigianlConExrension, PATHINFO_FILENAME);
+                            $extension = pathinfo($nombreOrigianlConExrension, PATHINFO_EXTENSION);
+                            $tipoArchivo = $archivos['type'][$key];
+                            $size = $archivos['size'][$key];
+                            $guid = getGUID();
+                            $nombreUnicoExtension = $fechaCreacion .'-'. $guid .'.'.$extension;
                             
-                    //         $_FILES["archivos"]["name"][$key] =  $nombreUnicoExtension ; 
+                            $archivos["name"][$key] =  $nombreUnicoExtension ; 
             
-                    //         // Nombres de archivos de temporales
-                    //         $archivonombre = $_FILES["archivos"]["name"][$key];
-                    //         $fuente = $_FILES["archivos"]["tmp_name"][$key];  
-            
-                    //         $ruta = 'https://azsolar.blob.core.windows.net/azsolar/' .  $nombreUnicoExtension;
-                    //         $notaArchivo = $notaArchivo. '<br><a href="'.$ruta.'">'.$nombreOrigianlConExrension .'</a>' ;
-                    //         $archivo['archivos'] = [
-                    //             'name' => $nombreUnicoExtension,
-                    //             'full_path' => $_FILES["archivos"]["full_path"][$key],
-                    //             'type' =>  $tipoArchivo,
-                    //             'tmp_name' => $fuente,
-                    //             'error' => $_FILES["archivos"]["error"][$key],
-                    //             'size' =>  $size
-                    //         ];                
-                            // try {
-                            //     $blobService->addBlobContainer($containerName);
-                            //     $blobService->setBlobContainerAcl($containerName, AzureBlobService::ACL_BLOB);
-                            // } catch (ServiceException $serviceException) {
-                                     
-                            // }
-                            // try {
-                            //     $fileName = $blobService->uploadBlob($containerName,  $archivo['archivos']);
-                            // } catch (ServiceException $serviceException) {
-                                     
-                            // }
-                    //     }
-                    // }
+                            // Nombres de archivos de temporales
+                            $fuente = $archivos["tmp_name"][$key];  
+                            
+                            $ruta = "$nombreUnicoExtension";
+                            $rutaAzure = 'https://azsolar.blob.core.windows.net/azsolar/' .  $nombreUnicoExtension;
+                            $notaArchivo = $notaArchivo. '<br><a href="'.$rutaAzure.'">'.$nombreOrigianlConExrension .'</a>' ;
+                            $archivo['archivos'] = [
+                                'name' => $nombreUnicoExtension,
+                                'full_path' => $_FILES["archivos"]["full_path"][$key],
+                                'type' =>  $tipoArchivo,
+                                'tmp_name' => $fuente,
+                                'error' => $_FILES["archivos"]["error"][$key],
+                                'size' =>  $size
+                            ];                
+                            
+                            try {
+                                $blobClient->createBlockBlob($containerName, $ruta, fopen($archivoTmp, "r"));
+                            } catch (ServiceException $e) {
+                                $_SESSION['erroCRM'] = 'Error al enviarse información (archivos)';
+                                header('location: formCRM.php');              
+                            }
+                            
+                        }
+                    }
+                    $notaArchivoValidar = addNote($notaArchivo, $idLead, $token, $dominio);
+                    if(!$notaArchivoValidar){
+                        $_SESSION['erroCRM'] = 'Error al enviarse información (archivos)';
+                        header('location: formCRM.php');              
+                    }
 
-                    // $notaArchivoValidar = addNote($notaArchivo, $idLead, $token, $dominio);
-                    // if(!$notaArchivoValidar){
-                    //     $_SESSION['erroCRM'] = 'Error al enviarse información (archivos)';
-                    //     header('location: formCRM.php');              
-                    // }
-
-            //    } 
+                } 
             } else{
-                $_SESSION['erroCRM'] = 'Error al enviarse información 2';
+                $_SESSION['erroCRM'] = 'Error al enviarse información';
                 header('location: formCRM.php');        
             }
             
         }else{    
-            $_SESSION['erroCRM'] = 'Error al enviarse información 3';
+            $_SESSION['erroCRM'] = 'Error al enviarse información';
             header('location: formCRM.php');
         }
         $_SESSION['datosCRM'] = [   'nombre'=> $_POST['nombre'],
