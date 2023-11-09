@@ -50,36 +50,36 @@ include ('includes/AzureBlobService.php');
                 }
 
                 if ($_FILES['archivos']['error'][0] != UPLOAD_ERR_NO_FILE) {
-                    foreach($_FILES["archivos"]['tmp_name'] as $key => $tmp_name){
-                        if($_FILES["archivos"]["name"][$key]) {
-                            $path = $_FILES['archivos']['name'][$key]; 
-                            echo '<br>path: '. $path;
-                            $nombreOriginalSinExtension = pathinfo($path, PATHINFO_FILENAME);
-                            echo ' <br>Nombre: '. $nombreOriginalSinExtension;
-                            $nombreOrigianlConExrension = $_FILES["archivos"]["name"][$key]; 
-                            $extension = pathinfo($path, PATHINFO_EXTENSION);
-                            echo '<br>Extensión: '. $extension;
-                            $tipoArchivo = $_FILES['archivos']['type'][$key];
-                            $size = $_FILES['archivos']['size'][$key];
-                            $guid = getGUID();
-                            '<br>unica: '. $nombreUnicoExtension = $fechaCreacion .'-'. $guid .'.'.$extension;
+                    // foreach($_FILES["archivos"]['tmp_name'] as $key => $tmp_name){
+                    //     if($_FILES["archivos"]["name"][$key]) {
+                    //         $path = $_FILES['archivos']['name'][$key]; 
+                    //         echo '<br>path: '. $path;
+                    //         $nombreOriginalSinExtension = pathinfo($path, PATHINFO_FILENAME);
+                    //         echo ' <br>Nombre: '. $nombreOriginalSinExtension;
+                    //         $nombreOrigianlConExrension = $_FILES["archivos"]["name"][$key]; 
+                    //         $extension = pathinfo($path, PATHINFO_EXTENSION);
+                    //         echo '<br>Extensión: '. $extension;
+                    //         $tipoArchivo = $_FILES['archivos']['type'][$key];
+                    //         $size = $_FILES['archivos']['size'][$key];
+                    //         $guid = getGUID();
+                    //         '<br>unica: '. $nombreUnicoExtension = $fechaCreacion .'-'. $guid .'.'.$extension;
                             
-                            $_FILES["archivos"]["name"][$key] =  $nombreUnicoExtension ; 
+                    //         $_FILES["archivos"]["name"][$key] =  $nombreUnicoExtension ; 
             
-                            // Nombres de archivos de temporales
-                            $archivonombre = $_FILES["archivos"]["name"][$key];
-                            $fuente = $_FILES["archivos"]["tmp_name"][$key];  
+                    //         // Nombres de archivos de temporales
+                    //         $archivonombre = $_FILES["archivos"]["name"][$key];
+                    //         $fuente = $_FILES["archivos"]["tmp_name"][$key];  
             
-                            $ruta = 'https://azsolar.blob.core.windows.net/azsolar/' .  $nombreUnicoExtension;
-                            $notaArchivo = $notaArchivo. '<br><a href="'.$ruta.'">'.$nombreOrigianlConExrension .'</a>' ;
-                            $archivo['archivos'] = [
-                                'name' => $nombreUnicoExtension,
-                                'full_path' => $_FILES["archivos"]["full_path"][$key],
-                                'type' =>  $tipoArchivo,
-                                'tmp_name' => $fuente,
-                                'error' => $_FILES["archivos"]["error"][$key],
-                                'size' =>  $size
-                            ];                
+                    //         $ruta = 'https://azsolar.blob.core.windows.net/azsolar/' .  $nombreUnicoExtension;
+                    //         $notaArchivo = $notaArchivo. '<br><a href="'.$ruta.'">'.$nombreOrigianlConExrension .'</a>' ;
+                    //         $archivo['archivos'] = [
+                    //             'name' => $nombreUnicoExtension,
+                    //             'full_path' => $_FILES["archivos"]["full_path"][$key],
+                    //             'type' =>  $tipoArchivo,
+                    //             'tmp_name' => $fuente,
+                    //             'error' => $_FILES["archivos"]["error"][$key],
+                    //             'size' =>  $size
+                    //         ];                
                             // try {
                             //     $blobService->addBlobContainer($containerName);
                             //     $blobService->setBlobContainerAcl($containerName, AzureBlobService::ACL_BLOB);
@@ -91,8 +91,8 @@ include ('includes/AzureBlobService.php');
                             // } catch (ServiceException $serviceException) {
                                      
                             // }
-                        }
-                    }
+                    //     }
+                    // }
 
                     // $notaArchivoValidar = addNote($notaArchivo, $idLead, $token, $dominio);
                     // if(!$notaArchivoValidar){
