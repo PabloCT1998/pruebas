@@ -306,7 +306,17 @@
     $datos = $result->fetchAll(PDO::FETCH_ASSOC);
 	  return $datos;
   }
-  
+   function seleccionarParametroCRMActivo($UsuarioID){
+    $soporte = new SolarDB ();
+	  $conexion = $soporte->connect();
+    $result = $conexion->prepare('SELECT DescParametroCRM, ValorParametroCRM 
+                                  FROM ParametroCRM
+                                  WHERE UsuarioID = ? 
+                                  AND DescParametroCRM = ?;');
+    $result->execute([$UsuarioID, 'CRM Activo']);
+    $datos = $result->fetchAll(PDO::FETCH_ASSOC);
+	  return $datos;
+  }
 
   function seleccionarParametrosCRM1($UsuarioID){
     $soporte = new SolarDB ();
