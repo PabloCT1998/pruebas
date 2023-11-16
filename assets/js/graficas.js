@@ -189,13 +189,51 @@ grid: {
   borderColor: '#000000',
 }
 };
+
 var chart1 = new ApexCharts(document.querySelector("#chart1"), options1);
 var chart2 = new ApexCharts(document.querySelector("#chart2"), options2);
 chart1.render();
 chart2.render();
 const generatePdfBtn = document.getElementById('botonpdf');
+const  resumenFinancieroBtn = document.getElementById('resumenFinanciero');
 // Agrega un evento de clic al botón
 generatePdfBtn.addEventListener('click', () => {
+  generarPDF(1);
+});
+
+resumenFinancieroBtn.addEventListener('click', () => {
+       // Crea un nuevo documento PDF
+       $('#spinner').show();
+
+         generarPDF(2).then((pdfData) => {
+          $.ajax({
+            url: 'guardarAzure.php',  // Reemplaza con la URL de tu servidor y endpoint
+            type: 'POST',
+            data: pdfData, 
+            // Los datos del PDF como array de bytes
+            contentType: 'application/pdf',  // Indica que estás enviando un archivo PDF
+            success: function(response) {
+              // Manejar la respuesta del servidor si es necesario
+              console.log('Archivo PDF enviado exitosamente:', response);
+    
+              // Redirigir a otra página después de guardar el PDF
+              window.location.href = 'resumenFinanciero.php';
+            },
+            error: function(error) {
+              // Manejar errores en la solicitud AJAX
+              console.error('Error al enviar el archivo PDF:', error);
+            },
+            complete: function() {
+              // Ocultar el spinner después de completar la solicitud
+              $('#spinner').hide();
+            }
+        });
+        
+         })
+       
+});
+
+const generarPDF = async (indicador) => {
   // Crea un nuevo documento PDF
   const pdf = new jsPDF({
     format: 'letter' // Establece el tamaño del papel a carta
@@ -242,12 +280,18 @@ generatePdfBtn.addEventListener('click', () => {
   });
 
   // Guarda el documento PDF
-  var dataURL = chart1.dataURI().then(({ imgURI, blob }) => {
-    pdf.addImage(imgURI, 'PNG', 10, 147, 175, 62); // Especifica el ancho y alto deseados (50x50 puntos)
-  })
+  const chart1Data = await chart1.dataURI();
+  pdf.addImage(chart1Data.imgURI, 'PNG', 10, 147, 175, 62, undefined, 'FAST', 0, 0, { quality: 0.5 });
 
-  var dataURL = chart2.dataURI().then(({ imgURI, blob }) => {
-    pdf.addImage(imgURI, 'PNG', 10, 210,175, 62 );
+  const chart2Data = await chart2.dataURI();
+  pdf.addImage(chart2Data.imgURI, 'PNG', 10, 210, 175, 62, undefined, 'FAST', 0, 0, { quality: 0.5 });
+
+  // Resto de tu código para agregar la tabla y guardar el PDF...
+
+  if (indicador === 1) {
     pdf.save("resumen_ejecutivo.pdf");
-  })
-});
+  } else if (indicador === 2) {
+    var pdfData = await pdf.output('datauristring');
+    return pdfData;
+  }
+};

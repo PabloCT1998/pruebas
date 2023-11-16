@@ -42,7 +42,7 @@ $dinero = $_SESSION['precioVenta'];
 if($pipedriveActivo == 1 && $hubspotActivo== 0 ) {
 	if(isset($_SESSION['datosCRM'])){
 		$titulo = $_SESSION['datosCRM']['titulo'];
-		$nombre = (isset ($_SESSION['datosCRM']['nombre'])) ? (isset ($_SESSION['datosCRM']['nombre'])) :'';
+		$nombre = (isset ($_SESSION['datosCRM']['nombre'])) ? $_SESSION['datosCRM']['nombre'] :'';
 		$telefono = (isset($_SESSION['datosCRM']['telefono']))? $_SESSION['datosCRM']['telefono']: '';
 		$correo = (isset($_SESSION['datosCRM']['correoElectronico']))? $_SESSION['datosCRM']['correoElectronico'] :'';
 		$dinero = $_SESSION['datosCRM']['dinero'];
@@ -51,7 +51,7 @@ if($pipedriveActivo == 1 && $hubspotActivo== 0 ) {
 		$titulo = '';
 		$nombre = $_SESSION['input1']['nomUsuario'];
 		$telefono = '';
-		$correo = '';
+		$correo = ''; 
 		$nota = '';
 	}
 }else if($pipedriveActivo == 0 && $hubspotActivo== 1 ){

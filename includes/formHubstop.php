@@ -62,7 +62,7 @@
                 <div class="row">
                     <div class="col-auto">
                         <label for="dinero" class="form-label">Dinero</label>
-                        <input type="number" min=0 class="form-control" id="dinero" step="any" value="<?php echo number_format($dinero, 2, '.', '') ?>"required="required" name="dinero">
+                        <input type="text" min=0 class="form-control" id="dinero" step="any" value="<?php echo $dinero ?>"required="required" name="dinero">
                     </div>
                 </div>
                 <br>

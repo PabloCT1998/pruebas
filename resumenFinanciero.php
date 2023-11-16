@@ -1,5 +1,4 @@
 <?php 
-
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: *");
 
@@ -9,6 +8,7 @@ session_start();
 if (!definido($_SESSION['usuario'])) {
     header('location: LoginUser.php');
 }
+$_SESSION['archivosCRM']['tipo'] = 'RF';
 $parametros = seleccionarParametroCRMActivo($_SESSION['usuario']['UsuarioID']);
 $crm = $parametros[0]['ValorParametroCRM'];
 $mesesConsumo = [];
@@ -53,9 +53,7 @@ if(llaveDefinida('input1', $_SESSION) && llaveDefinida('input2', $_SESSION)&& ll
 }else{
     header("Location: index.php");
 }
-echo 1;
 ?>
-
 <!DOCTYPE html>
 <html lang="es">
     <?php require_once 'includes/header.php';?>
@@ -81,9 +79,10 @@ echo 1;
                 <?php if($crm){?>
                 <div class="col-auto"> 
                     <div class="d-flex">
-                        <a href="formCRM.php" class="btn text-light  no-imprimir bg-success" >  
+                        <button id="enviarCrm" type="button"  class="btn text-light bg-success" >  
+                            <span id="spinner" class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display: none;"></span>
                             Enviar Información al CRM
-                        </a>
+                        </button>
                     </div>
                 </div>
                 <?php }?>
@@ -146,6 +145,8 @@ echo 1;
     </body>
     <?php require_once 'includes/footer.php';?>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js" integrity="sha384-NaWTHo/8YCBYJ59830LTz/P4aQZK1sS0SneOgAvhsIl3zBu8r9RevNg5lHCHAuQ/" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.12/jspdf.plugin.autotable.min.js"></script>
     <script src="assets/js/crearpdf.js" defer></script>

@@ -46,14 +46,7 @@
                 <div class="row">
                     <div class="col-auto">
                         <label for="dinero" class="form-label">Dinero</label>
-                        <input type="number" min=0 class="form-control" step="any" value="<?php echo number_format($dinero, 2, '.', '') ?>"required="required" name="dinero">
-                    </div>
-                </div>
-                <br>
-                <div class="row">
-                  <div class="col-5">
-                       <label for="archivos[]" class="form-label">Archivos</label>
-                       <input type="file" class="form-control" name="archivos[]" id="archivos[]" multiple="">
+                        <input type="text" class="form-control" value="<?php echo $dinero?>"required="required" name="dinero">
                     </div>
                 </div>
                 <br>

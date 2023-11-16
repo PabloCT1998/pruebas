@@ -1,6 +1,43 @@
 const generatePdfBtn = document.getElementById('botonpdf');
+const generEnviarPdfBtn = document.getElementById('enviarCrm');
+
+
 generatePdfBtn.addEventListener('click', () => {
     // Crea un nuevo documento PDF
+    generarPDF(1);});
+
+generEnviarPdfBtn.addEventListener('click', () => {
+        // Crea un nuevo documento PDF
+        $('#spinner').show();
+
+     var pdfData = generarPDF(2);
+
+     $.ajax({
+        url: 'guardarAzure.php',  // Reemplaza con la URL de tu servidor y endpoint
+        type: 'POST',
+        data: pdfData, 
+        nombre: 'resumenFinanciero',  // Puedes agregar otros parámetros aquí
+        // Los datos del PDF como array de bytes
+        contentType: 'application/pdf',  // Indica que estás enviando un archivo PDF
+        success: function(response) {
+          // Manejar la respuesta del servidor si es necesario
+          console.log('Archivo PDF enviado exitosamente:', response);
+
+          // Redirigir a otra página después de guardar el PDF
+          window.location.href = 'formCrm.php';
+        },
+        error: function(error) {
+          // Manejar errores en la solicitud AJAX
+          console.error('Error al enviar el archivo PDF:', error);
+        },
+        complete: function() {
+          // Ocultar el spinner después de completar la solicitud
+          $('#spinner').hide();
+        }
+    });
+    
+    });
+const generarPDF = (indicador) => {
     const pdf = new jsPDF({
         format: 'letter' // Establece el tamaño del papel a carta
     });
@@ -95,8 +132,12 @@ generatePdfBtn.addEventListener('click', () => {
     pdf.setFontStyle(styles.fontStyle);
     pdf.setFontSize(styles.fontSize);
     pdf.setTextColor(...styles.textColor);
-
     pdf.text(comisionVendedor, 30, 140);
+    if(indicador === 1){
+        pdf.save("resumen_financiero.pdf");
+    }else if(indicador === 2){
+        var pdfData = pdf.output('datauristring');
+        return pdfData;
+    }
 
-    pdf.save("resumen_financiero.pdf");
-});
+};

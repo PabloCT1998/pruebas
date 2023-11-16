@@ -295,18 +295,7 @@
 	  return $datos;
   }
 
-  function seleccionarParametroPipedrive($UsuarioID){
-    $soporte = new SolarDB ();
-	  $conexion = $soporte->connect();
-    $result = $conexion->prepare('SELECT DescParametroCRM, ValorParametroCRM 
-                                  FROM ParametroCRM
-                                  WHERE UsuarioID = ? 
-                                  AND DescParametroCRM = IN (Token Pipedrive, Dominio Pipedrive)');
-    $result->execute([$UsuarioID, 'CRM Activo']);
-    $datos = $result->fetchAll(PDO::FETCH_ASSOC);
-	  return $datos;
-  }
-   function seleccionarParametroCRMActivo($UsuarioID){
+  function seleccionarParametroCRMActivo($UsuarioID){
     $soporte = new SolarDB ();
 	  $conexion = $soporte->connect();
     $result = $conexion->prepare('SELECT DescParametroCRM, ValorParametroCRM 
@@ -317,6 +306,7 @@
     $datos = $result->fetchAll(PDO::FETCH_ASSOC);
 	  return $datos;
   }
+  
 
   function seleccionarParametrosCRM1($UsuarioID){
     $soporte = new SolarDB ();
@@ -512,6 +502,30 @@ function addDealHubspot($token, $titulo, $dinero){
   }
 }
 
+
+function enviarArchivoHubspot($url, $token, $nombre){
+  $azureBlobUrl = $url;
+  $hubspot = \HubSpot\Factory::createWithAccessToken($token);
+  $content = file_get_contents($azureBlobUrl);
+
+  // Crea un archivo temporal y escribe el contenido en él
+  $tempFile = tempnam(sys_get_temp_dir(), 'azure_file');
+  file_put_contents($tempFile, $content);
+
+  // Luego, procede a cargar el archivo en HubSpot
+  try {
+    $response = $hubspot->files()->filesApi()->upload($tempFile, null, '/', $nombre, null, json_encode([
+      'access' => 'PRIVATE',
+      'ttl' => null, // O establece el tiempo de vida según sea necesario
+      'overwrite' => false,
+      'duplicateValidationStrategy' => 'NONE',
+      'duplicateValidationScope' => 'EXACT_FOLDER'
+    ]));
+    return 1;
+  } catch (ApiException $e) {
+    return 0;
+  }
+}
 
 function getGUID(){
   if (function_exists('com_create_guid')){
